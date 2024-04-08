@@ -60,17 +60,17 @@
                       <span class="nav-text">Dashboard</span>
                     </a>
                   </li>
+                  <li>
+                    <a class="sidenav-item-link" href="{% url 'home:import_geral' %}">
+                      <i class="bi bi-cloud-upload"></i>
+                      <span class="nav-text">Importar dados</span>
+                    </a>
+                  </li>
                   <li class="section-title">
                     Talhão
                   </li>
                   <li>
-                    <a class="sidenav-item-link" href="{% url 'fields:import_fields' %}">
-                      <i class="bi bi-cloud-upload"></i>
-                      <span class="nav-text">Importar talhões</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="sidenav-item-link" href="{% url 'fields:get' %}">
+                    <a class="sidenav-item-link" href="{% url 'fields:get_fields' %}">
                       <i class="bi bi-search"></i>
                       <span class="nav-text">Consulta de talhões</span>
                     </a>
@@ -79,13 +79,7 @@
                     Atividades
                     </li>
                   <li>
-                    <a class="sidenav-item-link" href="{% url 'activities:import_activities' %}">
-                      <i class="bi bi-cloud-upload"></i>
-                      <span class="nav-text">Importar atividades</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="sidenav-item-link" href="{% url 'activities:get' %}">
+                    <a class="sidenav-item-link" href="{% url 'activities:get_activities' %}">
                       <i class="bi bi-search"></i>
                       <span class="nav-text">Consultar atividades</span>
                     </a>
@@ -94,13 +88,7 @@
                     Insumos
                     </li>
                   <li>
-                    <a class="sidenav-item-link" href="{% url 'supplies:import_supplies' %}">
-                      <i class="bi bi-cloud-upload"></i>
-                      <span class="nav-text">Importar insumos</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="sidenav-item-link" href="{% url 'supplies:get' %}">
+                    <a class="sidenav-item-link" href="{% url 'supplies:get_supplies' %}">
                       <i class="bi bi-search"></i>
                       <span class="nav-text">Consulta de insumos</span>
                     </a>

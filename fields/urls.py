@@ -4,6 +4,6 @@ from . import views
 app_name = 'fields'
 
 urlpatterns = [
-    path('import-fields/', views.import_fields, name='import_fields'),
-    path('get/', views.get, name='get')
+    path('import-data/', views.import_data, name='import_data'),
+    path('get-fields/', views.get_fields, name='get_fields')
 ]

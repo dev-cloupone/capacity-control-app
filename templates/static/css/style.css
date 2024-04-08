@@ -275,7 +275,7 @@ border-color:#6d9be0;
 color: #FFF;
 text-transform: uppercase;
 text-align: center;
-margin-top: 10px;
+margin-top: 20px;
 cursor: pointer;
 border-radius:40px;
 transition:color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;;
@@ -11633,6 +11633,7 @@ button {
   text-transform: uppercase;
   box-shadow: none !important;
   padding: 0.3125rem 1rem;
+  margin-top:-25px;
 }
 .btn.btn-square {
   border-radius: 0px;
@@ -17504,4 +17505,25 @@ padding-bottom:30px;
 }
 .col-xl-6{
 text-align:bottom;
+}
+
+.bi-eye-fill::before {
+    content: "\f33e";
+    cursor: pointer;
+}
+.relative {
+    position: relative;
+}
+
+.input-lg {
+    padding-right: 30px; /* Espaço para o ícone */
+}
+
+.toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    padding-right:25px;
 }
