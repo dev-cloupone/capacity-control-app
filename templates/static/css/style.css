@@ -266,21 +266,7 @@ input#csv_file{
 display:none;
 }
 
-label#csv_label{
-font-family:inherit;
-padding:0.3125rem 1rem;
-width: 200px;
-background-color: #6d9be0;
-border-color:#6d9be0;
-color: #FFF;
-text-transform: uppercase;
-text-align: center;
-margin-top: 20px;
-cursor: pointer;
-border-radius:40px;
-transition:color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;;
 
-}
 
 label#csv_label:hover{
 color:;
@@ -2512,7 +2498,7 @@ fieldset:disabled a.btn {
 
 .btn-primary {
   color: #ffffff;
-  background-color: #6d9be0;
+  background-color: #007bff;
   border-color: #6d9be0;
 }
 .btn-primary:hover {
@@ -11630,7 +11616,6 @@ button {
 
 /* ===== BUTTONS ===== */
 .btn {
-  text-transform: uppercase;
   box-shadow: none !important;
   padding: 0.3125rem 1rem;
   margin-top:-25px;
@@ -11871,7 +11856,6 @@ button {
   padding-top: 1.875rem;
   padding-left:3rem;
   padding-bottom: 1rem;
-  display: flex;
   justify-content: space-between;
   background-color: transparent;
   border-bottom: none;
@@ -17527,3 +17511,4 @@ text-align:bottom;
     cursor: pointer;
     padding-right:25px;
 }
+

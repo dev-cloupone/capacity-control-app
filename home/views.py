@@ -1,10 +1,16 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Field, Activity, Supplie
+from fields.models import Field
+from activities.models import Activity
+from supplies.models import Supplie
 import csv
-from fields.views import import_data, get_fields
-from activities.views import import_activities, get_activities
-from supplies.views import import_supplies, get_supplies
+from fields.import_data import import_data
+from activities.import_data import import_activities
+from supplies.import_data import import_supplies
+from fields.views import  get_fields
+from activities.views import  get_activities
+from supplies.views import  get_supplies
+from django.views.decorators.csrf import csrf_exempt
 
 @login_required
 def import_geral(request):
@@ -64,4 +70,5 @@ def home(request):
 
     return render(request, 'home.html', {'chart_data': data})
 
-
+def custom_500(request):
+    return render(request, '500.html', status=500)

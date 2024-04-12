@@ -1,9 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
+    <link href="https://fonts.googleapis.com/css?family=Karla:400,700|Roboto" rel="stylesheet">
+
+    <!-- PLUGINS CSS STYLE -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Password Reset</title>
+    <title>Redefinir Senha</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -24,6 +29,7 @@
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             text-align: center;
+            position: relative; /* Adicionado para o posicionamento do botão de fechar */
         }
 
         h3 {
@@ -38,7 +44,6 @@
             align-items: center;
         }
 
-        .form input[type="email"],
         .form input[type="password"],
         .form input[type="submit"] {
             width: 100%;
@@ -47,6 +52,15 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             box-sizing: border-box;
+            position: relative; /* Adicionado para o posicionamento absoluto do ícone */
+        }
+
+        .password-icon {
+            position: absolute;
+            top: 50%;
+            right: 5px;
+            transform: translateY(-50%);
+            cursor: pointer;
         }
 
         .form input[type="submit"] {
@@ -57,25 +71,118 @@
         }
 
         .form input[type="submit"]:hover {
-            background-color: #0056b3;
+            background-color: #7da9eb;
         }
 
         p {
             font-size: 16px;
             margin-top: 20px;
-            color: #555;
+        }
+        ul{
+            margin-top:15px;
+        }
+        .error-card {
+            color: #ffdce9;
+            background-color: #fd5190;
+            border-color: #fd5190;
+            position: relative;
+            border: 1px solid transparent;
+            border-radius: 0.25rem;
+        }
+
+        /* Estilos para o botão de fechar */
+        .close-button {
+            position: absolute;
+            top: 53%;
+            transform: translate(50%, -50%);
+            cursor: pointer;
+            box-sizing: content-box;
+            width: 25px;
+            margin-left: 80px;
+            color: #000;
+            border: 0;
+            border-radius: 0.25rem;
+            opacity: .5;
+            font-size:25px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h3>Digite sua nova senha</h3>
-        <form class="form" method="post">
+        <h3>Redefinir Senha</h3>
+        <form class="form" method="post" onsubmit="return validateForm()">
             {% csrf_token %}
-            {{form.as_p}}
-            <input type="submit" value="Reset Password">
+            <label for="id_new_password1">Nova Senha:</label>
+            <div style="position: relative;">
+                <input type="password" name="new_password1" id="id_new_password1">
+                <i class="bi bi-eye-fill password-icon" id="btn-password1" onclick="showPassword('id_new_password1')"></i>
+            </div>
+            <label for="id_new_password2">Confirme a Nova Senha:</label>
+            <div style="position: relative;">
+                <input type="password" name="new_password2" id="id_new_password2">
+                <i class="bi bi-eye-fill password-icon" id="btn-password2" onclick="showPassword('id_new_password2')"></i>
+            </div>
+            <input type="submit" value="Redefinir Senha">
         </form>
-        <p>Lembrou sua senha? <a href="{% url 'home' %}">Sign in</a></p>
+        <div class="error-card" id="error-card" style="display:none;">
+            <span class="close-button" onclick="closeErrorMessage()">&times;</span>
+            <p id="error-message" class="error-message"></p>
+        </div>
+        <strong>
+            <ul>
+                <li>A sua senha não pode ser similar às suas informações pessoais.</li>
+                <li>A sua senha deve conter pelo menos 8 caracteres.</li>
+                <li>A sua senha não pode ser uma senha comum.</li>
+                <li>A sua senha não pode ter apenas números.</li>
+            </ul>
+        </strong>
+        <p>Lembrou sua senha? <a href="{% url 'home' %}">Faça login</a></p>
     </div>
+    <script>
+         function showPassword(inputId) {
+    var inputPass = document.getElementById(inputId);
+    var btnShowPass = inputPass.nextElementSibling;
+
+    if (inputPass.type === 'password') {
+        inputPass.setAttribute('type', 'text');
+        btnShowPass.classList.remove('bi-eye-fill');
+        btnShowPass.classList.add('bi-eye-slash-fill');
+        inputPass.style.marginBottom = '10px'; // Adiciona margem inferior
+        inputPass.style.borderRadius = '5px'; // Atualiza o raio da borda
+        inputPass.style.border = '1px solid #ccc'; // Atualiza a borda
+        inputPass.style.padding = '10px'; // Atualiza o preenchimento
+    } else {
+        inputPass.setAttribute('type', 'password');
+        btnShowPass.classList.remove('bi-eye-slash-fill');
+        btnShowPass.classList.add('bi-eye-fill');
+        inputPass.style.marginBottom = '10px'; // Adiciona margem inferior
+        inputPass.style.borderRadius = '5px'; // Atualiza o raio da borda
+        inputPass.style.border = '1px solid #ccc'; // Atualiza a borda
+        inputPass.style.padding = '10px'; // Atualiza o preenchimento
+    }
+}
+
+        function validateForm() {
+            var password1 = document.getElementById('id_new_password1').value;
+            var password2 = document.getElementById('id_new_password2').value;
+            var errorMessage = document.getElementById('error-message');
+            var errorCard = document.getElementById('error-card');
+
+            if (password1 !== password2) {
+                errorMessage.textContent = 'As senhas não são iguais.';
+                errorCard.style.display = 'block';
+                return false; // Impede o envio do formulário
+            }
+
+            errorMessage.textContent = ''; // Limpa a mensagem de erro se as senhas forem iguais
+            errorCard.style.display = 'none';
+            return true; // Permite o envio do formulário
+        }
+
+        function closeErrorMessage() {
+            var errorCard = document.getElementById('error-card');
+            errorCard.style.display = 'none';
+        }
+    </script>
 </body>
 </html>

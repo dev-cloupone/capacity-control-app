@@ -5,7 +5,6 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from django.core.mail import send_mail
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
@@ -29,5 +28,8 @@ urlpatterns = [
          name="password_reset_complete"),
 
 ]
+from django.conf.urls import handler500
+
+handler500 = 'home.views.custom_500'
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
