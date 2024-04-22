@@ -1,6 +1,5 @@
 from django.db import models
 import uuid
-
 class Field(models.Model):
     id = models.UUIDField(
         primary_key = True,

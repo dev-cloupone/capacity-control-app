@@ -14,9 +14,10 @@ urlpatterns = [
     path('supplies/', include(('supplies.urls', 'supplies'), namespace='supplies')),
     path('home/', include(('home.urls', 'home'), namespace='home')),
 
-
-    path('reset_password/', auth_views.PasswordResetView.as_view(template_name="reset_password.html"),
-         name="reset_password"),
+    path('reset_password/', auth_views.PasswordResetView.as_view(
+        template_name="reset_password.html",
+        email_template_name="custom_password_reset_email.html"
+    ), name="reset_password"),
 
     path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(template_name="reset_password_sent.html"),
          name="password_reset_done"),
@@ -29,7 +30,13 @@ urlpatterns = [
 
 ]
 from django.conf.urls import handler500
+from django.conf.urls import handler404
 
 handler500 = 'home.views.custom_500'
 
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+handler404 = 'home.views.custom_404'
+
+
+
+
+

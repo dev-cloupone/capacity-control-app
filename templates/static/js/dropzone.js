@@ -1,4 +1,4 @@
-  // Function to handle file drop
+// Function to handle file drop
 function handleFileDrop(event) {
     event.preventDefault();
     event.stopPropagation();
@@ -14,8 +14,8 @@ function handleFileDrop(event) {
         const fileInput = document.getElementById('csv_file');
         fileInput.files = files;
 
-        // Update label to show file name
-        updateFileName();
+        // Update label to show file name and display submit button
+        updateFileNameAndButtonVisibility();
     }
 }
 
@@ -37,12 +37,19 @@ function handleDragLeave(event) {
     event.target.classList.remove('hover');
 }
 
-// Update label to display file name
-function updateFileName() {
+// Update label to display file name and show submit button if a file is selected
+function updateFileNameAndButtonVisibility() {
     const fileInput = document.getElementById('csv_file');
     const label = document.getElementById('csv_label');
+    const submitBtn = document.getElementById('submitBtn');
 
-    label.innerText = fileInput.files[0].name;
+    if (fileInput.files.length > 0) {
+        label.innerText = fileInput.files[0].name;
+        submitBtn.style.display = 'block'; // Show submit button
+    } else {
+        label.innerText = "Ou selecione manualmente:";
+        submitBtn.style.display = 'none'; // Hide submit button if no file selected
+    }
 }
 
 // Event listeners for drag and drop functionality
@@ -54,13 +61,4 @@ dropZone.addEventListener('drop', handleFileDrop);
 
 // Additional event listener for file input change
 const fileInput = document.getElementById('csv_file');
-fileInput.addEventListener('change', updateFileName);
-
-function updateFileName() {
-    const fileInput = document.getElementById('csv_file');
-    const label = document.getElementById('csv_label');
-    const submitBtn = document.getElementById('submitBtn');
-
-    label.innerText = fileInput.files[0].name;
-    submitBtn.style.display = 'block'; // Show submit button
-}
+fileInput.addEventListener('change', updateFileNameAndButtonVisibility);

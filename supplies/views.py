@@ -4,8 +4,6 @@ from django.shortcuts import render, redirect
 from .forms import CSVImportForm
 from .models import Supplie
 import csv
-
-
 def get_supplies(request):
     supplie_list = Supplie.objects.all()
     return render(

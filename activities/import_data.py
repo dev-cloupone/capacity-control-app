@@ -1,7 +1,5 @@
 import csv
 from .models import Activity
-
-
 def import_activities( data):
     if data:
         csv_data = data.read().decode('utf-8').splitlines()

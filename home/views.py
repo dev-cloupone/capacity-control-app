@@ -4,7 +4,7 @@ from fields.models import Field
 from activities.models import Activity
 from supplies.models import Supplie
 import csv
-from fields.import_data import import_data
+from fields.import_data import import_fields
 from activities.import_data import import_activities
 from supplies.import_data import import_supplies
 from fields.views import  get_fields
@@ -17,21 +17,27 @@ def import_geral(request):
     if request.method == 'POST':
         csv_file = request.FILES.get('csv_file')
         if csv_file:
+            if not csv_file.name.endswith('.csv'):
+                return render(request, 'import_geral.html',
+                              {'error_message': "Por favor, selecione um arquivo CSV válido."})
+
             campo = request.POST.get('campo')
 
-            if campo == 'fields':
-                import_data(csv_file)
-                return redirect('/fields/get-fields/')
-
-            elif campo == 'activities':
-                import_activities(csv_file)
-                return redirect('/activities/get-activities/')
-
-            elif campo == 'supplies':
-                import_supplies(csv_file)
-                return redirect('/supplies/get-supplies/')
-
+            try:
+                if campo == 'fields':
+                    import_fields(csv_file)
+                    return redirect('/fields/get-fields/')
+                elif campo == 'activities':
+                    import_activities(csv_file)
+                    return redirect('/activities/get-activities/')
+                elif campo == 'supplies':
+                    import_supplies(csv_file)
+                    return redirect('/supplies/get-supplies/')
+            except Exception as e:
+                return render(request, 'import_geral.html',
+                              {'error_message': "Ocorreu um erro durante a importação dos dados, verifique o campo selecionado e tente novamente."})
     return render(request, 'import_geral.html')
+
 
 @login_required
 def home(request):
@@ -71,4 +77,7 @@ def home(request):
     return render(request, 'home.html', {'chart_data': data})
 
 def custom_500(request):
-    return render(request, '500.html', status=500)
+    return render(request, '500.html')
+
+def custom_404(request, exepcion):
+    return render(request, '404.html')

@@ -1,8 +1,6 @@
 import csv
 from .models import Field
-
-
-def import_data (data):
+def import_fields (data):
     if data:
         csv_data = data.read().decode('utf-8').splitlines()
         csv_reader = csv.DictReader(csv_data)

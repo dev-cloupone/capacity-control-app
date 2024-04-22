@@ -2,9 +2,6 @@ from .forms import CSVImportForm
 from django.shortcuts import render, redirect
 from .models import Activity
 import csv
-
-
-
 def get_activities(request):
     activity_list = Activity.objects.all()
     return render(

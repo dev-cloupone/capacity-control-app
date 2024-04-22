@@ -1,6 +1,5 @@
 from django.db import models
 import uuid
-
 class Activity(models.Model):
     id = models.UUIDField(
         primary_key = True,
@@ -11,3 +10,4 @@ class Activity(models.Model):
     name = models.CharField(max_length=100)
     valueActivity = models.FloatField()
     totalActivity = models.FloatField()
+
