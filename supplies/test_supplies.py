@@ -13,14 +13,10 @@ class ImportSuppliesTestCase(TestCase):
                         "Talhão2,20,10,100,2000\n"
 
     def test_import_supplies(self):
-        # Simular dados CSV como uma string
+
         csv_file = io.StringIO(self.csv_data)
-
-
-        # Chamar a função de importação
         import_supplies(self.csv_data)
 
-        # Verificar se os dados foram inseridos corretamente no banco de dados
         self.assertEqual(Supplie.objects.count(), 2)
 
         supplie1 = Supplie.objects.get(name="Talhão1")

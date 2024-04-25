@@ -1,6 +1,7 @@
 import csv
 from .models import Field
 def import_fields (data):
+
     if isinstance(data, str):
         data = io.StringIO(data)
     elif isinstance(data, bytes):
