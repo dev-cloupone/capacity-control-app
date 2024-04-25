@@ -29,7 +29,7 @@
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             text-align: center;
-            position: relative; /* Adicionado para o posicionamento do botão de fechar */
+            position: relative;
         }
 
         h3 {
@@ -45,6 +45,7 @@
         }
 
         .form input[type="password"],
+        .form input[type="text"],
         .form input[type="submit"] {
             width: 100%;
             padding: 10px;
@@ -52,7 +53,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             box-sizing: border-box;
-            position: relative; /* Adicionado para o posicionamento absoluto do ícone */
+            position: relative;
         }
 
         .password-icon {
@@ -90,7 +91,6 @@
             border-radius: 0.25rem;
         }
 
-        /* Estilos para o botão de fechar */
         .close-button {
             position: absolute;
             top: 53%;
@@ -112,56 +112,50 @@
         <h3>Redefinir Senha</h3>
         <form class="form" method="post" onsubmit="return validateForm()">
             {% csrf_token %}
-            {{form.as_p}}
-           <!--  <label for="id_new_password1">Nova Senha:</label>
-            <div style="position: relative;">
-                <input type="password" name="new_password1" id="id_new_password1">
-                <i class="bi bi-eye-fill password-icon" id="btn-password1" onclick="showPassword('id_new_password1')"></i>
+            <div class="form-group">
+                <label for="id_new_password1">Nova Senha:</label>
+                <div style="position: relative;">
+                    <input type="password" name="new_password1" id="id_new_password1">
+                    <i class="bi bi-eye-fill password-icon" onclick="showPassword('id_new_password1')"></i>
+                </div>
             </div>
-            <label for="id_new_password2">Confirme a Nova Senha:</label>
-            <div style="position: relative;">
-                <input type="password" name="new_password2" id="id_new_password2">
-                <i class="bi bi-eye-fill password-icon" id="btn-password2" onclick="showPassword('id_new_password2')"></i>
-            </div>-->
-            <input type="submit" value="Redefinir Senha">
+            <div class="form-group">
+                <label for="id_new_password2">Confirme a Nova Senha:</label>
+                <div style="position: relative;">
+                    <input type="password" name="new_password2" id="id_new_password2">
+                    <i class="bi bi-eye-fill password-icon" onclick="showPassword('id_new_password2')" style="margin-left: -25px;"></i>
+                </div>
+            </div>
+            <input type="submit" value="Redefinir Senha" class="btn btn-primary">
         </form>
-       <!-- <div class="error-card" id="error-card" style="display:none;">
+        <div class="error-card" id="error-card" style="display:none;">
             <span class="close-button" onclick="closeErrorMessage()">&times;</span>
             <p id="error-message" class="error-message"></p>
         </div>
-        <strong>
-            <ul>
-                <li>A sua senha não pode ser similar às suas informações pessoais.</li>
-                <li>A sua senha deve conter pelo menos 8 caracteres.</li>
-                <li>A sua senha não pode ser uma senha comum.</li>
-                <li>A sua senha não pode ter apenas números.</li>
-            </ul>
-        </strong>
+        <ul>
+            <li>A sua senha não pode ser similar às suas informações pessoais.</li>
+            <li>A sua senha deve conter pelo menos 8 caracteres.</li>
+            <li>A sua senha não pode ser uma senha comum.</li>
+            <li>A sua senha não pode ter apenas números.</li>
+        </ul>
         <p>Lembrou sua senha? <a href="{% url 'home' %}">Faça login</a></p>
-    </div>-->
-    <script>
-         function showPassword(inputId) {
-    var inputPass = document.getElementById(inputId);
-    var btnShowPass = inputPass.nextElementSibling;
+    </div>
 
-    if (inputPass.type === 'password') {
-        inputPass.setAttribute('type', 'text');
-        btnShowPass.classList.remove('bi-eye-fill');
-        btnShowPass.classList.add('bi-eye-slash-fill');
-        inputPass.style.marginBottom = '10px'; // Adiciona margem inferior
-        inputPass.style.borderRadius = '5px'; // Atualiza o raio da borda
-        inputPass.style.border = '1px solid #ccc'; // Atualiza a borda
-        inputPass.style.padding = '10px'; // Atualiza o preenchimento
-    } else {
-        inputPass.setAttribute('type', 'password');
-        btnShowPass.classList.remove('bi-eye-slash-fill');
-        btnShowPass.classList.add('bi-eye-fill');
-        inputPass.style.marginBottom = '10px'; // Adiciona margem inferior
-        inputPass.style.borderRadius = '5px'; // Atualiza o raio da borda
-        inputPass.style.border = '1px solid #ccc'; // Atualiza a borda
-        inputPass.style.padding = '10px'; // Atualiza o preenchimento
-    }
-}
+    <script>
+        function showPassword(inputId) {
+            var inputPass = document.getElementById(inputId);
+            var btnShowPass = inputPass.nextElementSibling;
+
+            if (inputPass.type === 'password') {
+                inputPass.setAttribute('type', 'text');
+                btnShowPass.classList.remove('bi-eye-fill');
+                btnShowPass.classList.add('bi-eye-slash-fill');
+            } else {
+                inputPass.setAttribute('type', 'password');
+                btnShowPass.classList.remove('bi-eye-slash-fill');
+                btnShowPass.classList.add('bi-eye-fill');
+            }
+        }
 
         function validateForm() {
             var password1 = document.getElementById('id_new_password1').value;
@@ -172,12 +166,12 @@
             if (password1 !== password2) {
                 errorMessage.textContent = 'As senhas não são iguais.';
                 errorCard.style.display = 'block';
-                return false; // Impede o envio do formulário
+                return false;
             }
 
-            errorMessage.textContent = ''; // Limpa a mensagem de erro se as senhas forem iguais
+            errorMessage.textContent = '';
             errorCard.style.display = 'none';
-            return true; // Permite o envio do formulário
+            return true;
         }
 
         function closeErrorMessage() {

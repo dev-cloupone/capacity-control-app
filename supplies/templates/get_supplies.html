@@ -32,10 +32,10 @@
             {% for supplie in supplieList %}
               <tr>
                 <td>{{ supplie.name }}</td>
-                <td>{{ supplie.size}}</td>
-                <td>{{ supplie.sizeSupplie }}</td>
-                <td>{{ supplie.valueSupplie }}</td>
-                <td>{{ supplie.totalSupplie }}</td>
+                <td>{{ supplie.field_size}}</td>
+                <td>{{ supplie.quantity_per_hectare }}</td>
+                <td>{{ supplie.value }}</td>
+                <td>{{ supplie.total }}</td>
 
               </tr>
             {% endfor %}

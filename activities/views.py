@@ -1,4 +1,3 @@
-from .forms import CSVImportForm
 from django.shortcuts import render, redirect
 from .models import Activity
 import csv

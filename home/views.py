@@ -34,6 +34,7 @@ def import_geral(request):
                     import_supplies(csv_file)
                     return redirect('/supplies/get-supplies/')
             except Exception as e:
+                print(e)
                 return render(request, 'import_geral.html',
                               {'error_message': "Ocorreu um erro durante a importação dos dados, verifique o campo selecionado e tente novamente."})
     return render(request, 'import_geral.html')
@@ -49,9 +50,9 @@ def home(request):
     nameList_activities = [activity['name'] for activity in activities]
     valueList_activities = [str(activity['totalActivity']) for activity in activities]
 
-    supplies = Supplie.objects.all().order_by('-size').values()[:10]
+    supplies = Supplie.objects.all().order_by('-field_size').values()[:10]
     nameList_supplies = [supplie['name'] for supplie in supplies]
-    valueList_supplies = [str(supplie['totalSupplie']) for supplie in supplies]
+    valueList_supplies = [str(supplie['total']) for supplie in supplies]
 
     data = {
         "fields": {

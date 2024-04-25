@@ -2,12 +2,12 @@ from django.db import models
 import uuid
 class Supplie(models.Model):
     id = models.UUIDField(
-        primary_key = True,
-        default = uuid.uuid4,
-        editable = False
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False
     )
     name = models.CharField(max_length=100)
-    size = models.FloatField()
-    sizeSupplie = models.FloatField()
-    valueSupplie = models.FloatField()
-    totalSupplie = models.FloatField()
+    field_size = models.FloatField()
+    quantity_per_hectare = models.FloatField()
+    value = models.FloatField()
+    total = models.FloatField()
