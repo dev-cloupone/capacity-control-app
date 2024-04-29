@@ -24,13 +24,13 @@ class ImportActivitiesTestCase(TestCase):
 
         activity1 = Activity.objects.get(name="Atividade1")
         self.assertEqual(activity1.size, 10)
-        self.assertEqual(activity1.valueActivity, 50)
-        self.assertEqual(activity1.totalActivity, 500)
+        self.assertEqual(activity1.value, 50)
+        self.assertEqual(activity1.total, 500)
 
         activity2 = Activity.objects.get(name="Atividade2")
         self.assertEqual(activity2.size, 20)
-        self.assertEqual(activity2.valueActivity, 100)
-        self.assertEqual(activity2.totalActivity, 2000)
+        self.assertEqual(activity2.value, 100)
+        self.assertEqual(activity2.total, 2000)
 
 if __name__ == '__main__':
     unittest.main()

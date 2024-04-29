@@ -48,7 +48,7 @@ def home(request):
 
     activities = Activity.objects.all().order_by('-size').values()[:10]
     nameList_activities = [activity['name'] for activity in activities]
-    valueList_activities = [str(activity['totalActivity']) for activity in activities]
+    valueList_activities = [str(activity['total']) for activity in activities]
 
     supplies = Supplie.objects.all().order_by('-field_size').values()[:10]
     nameList_supplies = [supplie['name'] for supplie in supplies]

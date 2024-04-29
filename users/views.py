@@ -3,6 +3,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as login_dj, logout as logout_dj
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 from django.contrib import messages
 
 def login(request):
@@ -35,3 +39,14 @@ def user_settings(request):
     user.email = request.POST.get('email')
     user.save()
     return redirect('users:user_settings')
+
+@login_required
+def alterar_senha(request):
+    form = PasswordChangeForm(request.user, request.POST)
+    if form.is_valid():
+        user = form.save()
+        update_session_auth_hash(request, user)
+        return JsonResponse({'success': True})
+    else:
+        errors = dict(form.errors.items())
+        return JsonResponse({'success': False, 'errors': errors})

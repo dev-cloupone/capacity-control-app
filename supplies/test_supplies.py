@@ -7,7 +7,6 @@ from .import_data import import_supplies
 @override_settings(SETTINGS_MODULE='your_app.test_settings')
 class ImportSuppliesTestCase(TestCase):
     def setUp(self):
-        # Simular dados CSV como uma string
         self.csv_data = "Talhão,Tamanho,Insumo por hectare,Valor insumo,Total insumo\n" \
                         "Talhão1,10,5,50,500\n" \
                         "Talhão2,20,10,100,2000\n"

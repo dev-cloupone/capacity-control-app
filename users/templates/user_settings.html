@@ -10,6 +10,45 @@
 <script src="{% static 'js/scriptsform.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/sweetalert2.all.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/sweetalert2.min.css">
+<style>/* Estilos para a modal */
+.modal {
+    display: none; /* Oculta a modal por padrão */
+    position: fixed; /* Posiciona a modal de forma fixa na tela */
+    z-index: 1000; /* Define a ordem de empilhamento */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Adiciona rolagem se necessário */
+    background-color: rgba(0, 0, 0, 0.4); /* Fundo semi-transparente */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto; /* Centraliza a modal verticalmente e a posiciona a 10% da parte superior */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 60%; /* Largura da modal */
+    max-width: 400px; /* Largura máxima da modal */
+    border-radius: 8px; /* Borda arredondada */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+/* Estilos para o botão de fechar */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+</style>
 
 <div class="card card-default">
     <div class="card-header">
@@ -48,13 +87,29 @@
 
             <div class="d-flex justify-content-end mt-6">
                 <button id="botaoEnviar" type="submit" class="btn btn-primary mb-2 btn-pill" autocomplete="off">Atualizar perfil</button>
+                <button id="botaoAlterarSenha" type="button" class="btn btn-primary mb-2 btn-pill" autocomplete="off">Alterar senha</button>               </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal de alteração de senha -->
+<div id="modalAlterarSenha" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Alterar Senha</h2>
+        <form id="formAlterarSenha" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="novaSenha">Nova Senha</label>
+                <input type="password" class="form-control" id="novaSenha" name="novaSenha">
             </div>
+            <button id="botaoAlterarSenha" type="submit" class="btn btn-primary mb-2 btn-pill" autocomplete="off">Alterar senha</button>
         </form>
     </div>
 </div>
 
 <script>
-document.getElementById('profileForm').addEventListener('submit', function(event) {
+    document.getElementById('profileForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
         Swal.fire({
@@ -76,6 +131,65 @@ document.getElementById('profileForm').addEventListener('submit', function(event
             }
         });
     });
+
+   document.addEventListener('DOMContentLoaded', function() {
+    var modalAlterarSenha = document.getElementById('modalAlterarSenha');
+    var btnAlterarSenha = document.getElementById('botaoAlterarSenha');
+    var spanClose = document.getElementsByClassName('close')[0];
+
+    btnAlterarSenha.onclick = function() {
+        modalAlterarSenha.style.display = 'block';
+    }
+
+    spanClose.onclick = function() {
+        modalAlterarSenha.style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modalAlterarSenha) {
+            modalAlterarSenha.style.display = 'none';
+        }
+    }
+
+    // Submete o formulário de alteração de senha via AJAX
+    var formAlterarSenha = document.getElementById('formAlterarSenha');
+    formAlterarSenha.addEventListener('submit', function(event) {
+        event.preventDefault(); // Evita o comportamento padrão de envio do formulário
+
+        var formData = new FormData(formAlterarSenha);
+
+        fetch('{% url "users:alterar_senha" %}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Se a senha foi alterada com sucesso, exiba uma mensagem
+                swal.fire({
+                    icon: 'success',
+                    title: 'Sucesso!',
+                    text: 'Sua senha foi alterada com sucesso!'
+                });
+                modalAlterarSenha.style.display = 'none'; // Fecha a modal após o sucesso
+            } else {
+                // Se ocorreu algum erro, exiba uma mensagem de erro
+                swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Algo deu errado! Por favor, tente novamente.'
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+        });
+    });
+});
+
 </script>
 
 {% endblock %}

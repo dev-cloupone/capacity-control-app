@@ -3,6 +3,7 @@ import io
 from .models import Supplie
 
 def import_supplies(data):
+
     if data:
         if isinstance(data, str):
             data = io.StringIO(data)

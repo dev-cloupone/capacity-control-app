@@ -8,6 +8,6 @@ class Activity(models.Model):
     )
     size = models.FloatField()
     name = models.CharField(max_length=100)
-    valueActivity = models.FloatField()
-    totalActivity = models.FloatField()
+    value = models.FloatField()
+    total = models.FloatField()
 

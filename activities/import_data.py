@@ -1,5 +1,6 @@
 import csv
 from .models import Activity
+import io
 def import_activities( data):
 
     if data:
@@ -7,12 +8,12 @@ def import_activities( data):
         csv_reader = csv.DictReader(csv_data)
         for row in csv_reader:
             size = float(row['Tamanho'].replace('.', '').replace(',', '.'))
-            value_activity = float(row['Valor atividade'].replace('.', '').replace(',', '.').replace('R$', ''))
-            total_activity = float(row['Total atividade'].replace('.', '').replace(',', '.').replace('R$', ''))
+            value = float(row['Valor atividade'].replace('.', '').replace(',', '.').replace('R$', ''))
+            total = float(row['Total atividade'].replace('.', '').replace(',', '.').replace('R$', ''))
 
             Activity.objects.create(
                 size=size,
                 name=row['Atividade'],
-                valueActivity=value_activity,
-                totalActivity=total_activity
+                value=value,
+                total=total
             )
