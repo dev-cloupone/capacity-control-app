@@ -8,6 +8,8 @@ from django.contrib.auth import update_session_auth_hash
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.contrib import messages
+from django.urls import reverse_lazy
+from django.contrib.auth.views import PasswordChangeView
 
 def login(request):
     if request.method == "GET":
@@ -22,7 +24,6 @@ def login(request):
     else:
         messages.success(request, ("Usuário ou senha inválidos."))
         return redirect('/users/login')
-
 
 
 def logout(request):
@@ -40,13 +41,5 @@ def user_settings(request):
     user.save()
     return redirect('users:user_settings')
 
-@login_required
-def alterar_senha(request):
-    form = PasswordChangeForm(request.user, request.POST)
-    if form.is_valid():
-        user = form.save()
-        update_session_auth_hash(request, user)
-        return JsonResponse({'success': True})
-    else:
-        errors = dict(form.errors.items())
-        return JsonResponse({'success': False, 'errors': errors})
+class CustomPasswordChangeView(PasswordChangeView):
+    success_url = reverse_lazy('users:password_change_done')

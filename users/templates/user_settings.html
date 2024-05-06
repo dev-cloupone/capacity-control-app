@@ -48,6 +48,11 @@
     text-decoration: none;
     cursor: pointer;
 }
+.btn#botaoAlterarSenha{
+margin-left:10px;
+
+}
+
 </style>
 
 <div class="card card-default">
@@ -87,12 +92,13 @@
 
             <div class="d-flex justify-content-end mt-6">
                 <button id="botaoEnviar" type="submit" class="btn btn-primary mb-2 btn-pill" autocomplete="off">Atualizar perfil</button>
-                <button id="botaoAlterarSenha" type="button" class="btn btn-primary mb-2 btn-pill" autocomplete="off">Alterar senha</button>               </div>
+                <button id="botaoAlterarSenha" type="button" class="btn btn-primary mb-2 btn-pill" autocomplete="off">Alterar senha</button>
+            </div>
         </form>
     </div>
 </div>
 
-<!-- Modal de alteração de senha -->
+<!-- Modal de alteração de senha
 <div id="modalAlterarSenha" class="modal" style="display: none;">
     <div class="modal-content">
         <span class="close">&times;</span>
@@ -106,7 +112,7 @@
             <button id="botaoAlterarSenha" type="submit" class="btn btn-primary mb-2 btn-pill" autocomplete="off">Alterar senha</button>
         </form>
     </div>
-</div>
+</div>-->
 
 <script>
     document.getElementById('profileForm').addEventListener('submit', function(event) {
@@ -151,14 +157,13 @@
         }
     }
 
-    // Submete o formulário de alteração de senha via AJAX
     var formAlterarSenha = document.getElementById('formAlterarSenha');
     formAlterarSenha.addEventListener('submit', function(event) {
         event.preventDefault(); // Evita o comportamento padrão de envio do formulário
 
         var formData = new FormData(formAlterarSenha);
 
-        fetch('{% url "users:alterar_senha" %}', {
+        fetch('{% url "users:user_settings" %}', {
             method: 'POST',
             body: formData,
             headers: {
@@ -168,19 +173,18 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Se a senha foi alterada com sucesso, exiba uma mensagem
                 swal.fire({
                     icon: 'success',
                     title: 'Sucesso!',
                     text: 'Sua senha foi alterada com sucesso!'
                 });
-                modalAlterarSenha.style.display = 'none'; // Fecha a modal após o sucesso
+                modalAlterarSenha.style.display = 'none';
             } else {
                 // Se ocorreu algum erro, exiba uma mensagem de erro
                 swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'Algo deu errado! Por favor, tente novamente.'
+                    text: 'Algo deu errado!'
                 });
             }
         })
@@ -189,6 +193,10 @@
         });
     });
 });
+    document.getElementById("botaoAlterarSenha").addEventListener("click", function() {
+    window.location.href = "{% url 'users:password_change' %}";
+});
+
 
 </script>
 
