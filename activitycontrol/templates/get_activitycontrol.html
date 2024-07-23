@@ -11,20 +11,20 @@
     width: 450px;
     border-radius: 10px;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
-}
- 
-.calendar-container header {
+  }
+
+  .calendar-container header {
     display: flex;
     align-items: center;
     padding: 25px 30px 10px;
     justify-content: space-between;
-}
- 
-header .calendar-navigation {
+  }
+
+  header .calendar-navigation {
     display: flex;
-}
- 
-header .calendar-navigation span {
+  }
+
+  header .calendar-navigation span {
     height: 38px;
     width: 38px;
     margin: 0 1px;
@@ -35,63 +35,63 @@ header .calendar-navigation span {
     user-select: none;
     color: #aeabab;
     font-size: 1.9rem;
-}
- 
-.calendar-navigation span:last-child {
+  }
+
+  .calendar-navigation span:last-child {
     margin-right: -10px;
-}
- 
-header .calendar-navigation span:hover {
+  }
+
+  header .calendar-navigation span:hover {
     background: #f2f2f2;
-}
- 
-header .calendar-current-date {
+  }
+
+  header .calendar-current-date {
     font-weight: 500;
     font-size: 1.45rem;
-}
- 
-.calendar-body {
+  }
+
+  .calendar-body {
     padding: 20px;
-}
- 
-.calendar-body ul {
+  }
+
+  .calendar-body ul {
     list-style: none;
     flex-wrap: wrap;
     display: flex;
     text-align: center;
-}
- 
-.calendar-body .calendar-dates {
+  }
+
+  .calendar-body .calendar-dates {
     margin-bottom: 20px;
-}
- 
-.calendar-body li {
+  }
+
+  .calendar-body li {
     width: calc(100% / 7);
     font-size: 1.07rem;
     color: #414141;
-}
- 
-.calendar-body .calendar-weekdays li {
+  }
+
+  .calendar-body .calendar-weekdays li {
     cursor: default;
     font-weight: 500;
-}
- 
-.calendar-body .calendar-dates li {
+  }
+
+  .calendar-body .calendar-dates li {
     margin-top: 30px;
     position: relative;
     z-index: 1;
     cursor: pointer;
-}
- 
-.calendar-dates li.inactive {
+  }
+
+  .calendar-dates li.inactive {
     color: #aaa;
-}
- 
-.calendar-dates li.active {
+  }
+
+  .calendar-dates li.active {
     color: #fff;
-}
- 
-.calendar-dates li::before {
+  }
+
+  .calendar-dates li::before {
     position: absolute;
     content: "";
     z-index: -1;
@@ -101,45 +101,43 @@ header .calendar-current-date {
     height: 40px;
     border-radius: 50%;
     transform: translate(-50%, -50%);
-}
- 
-.calendar-dates li.active::before {
+  }
+
+  .calendar-dates li.active::before {
     background: #6332c5;
-}
- 
-.calendar-dates li:not(.active):hover::before {
+  }
+
+  .calendar-dates li:not(.active):hover::before {
     background: #e4e1e1;
-}
+  }
 </style>
 <div class="col-xl-12">
-<div class="calendar-container">
-  <header class="calendar-header">
+  <div class="calendar-container">
+    <header class="calendar-header">
       <p class="calendar-current-date"></p>
       <div class="calendar-navigation">
-          <span id="calendar-prev"
-                class="material-symbols-rounded">
-              chevron_left
-          </span>
-          <span id="calendar-next"
-                class="material-symbols-rounded">
-              chevron_right
-          </span>
+        <span id="calendar-prev" class="material-symbols-rounded">
+          chevron_left
+        </span>
+        <span id="calendar-next" class="material-symbols-rounded">
+          chevron_right
+        </span>
       </div>
-  </header>
+    </header>
 
-  <div class="calendar-body">
+    <div class="calendar-body">
       <ul class="calendar-weekdays">
-          <li>Sun</li>
-          <li>Mon</li>
-          <li>Tue</li>
-          <li>Wed</li>
-          <li>Thu</li>
-          <li>Fri</li>
-          <li>Sat</li>
+        <li>Dom</li>
+        <li>Seg</li>
+        <li>Ter</li>
+        <li>Qua</li>
+        <li>Qui</li>
+        <li>Sex</li>
+        <li>Sab</li>
       </ul>
       <ul class="calendar-dates"></ul>
+    </div>
   </div>
-</div>
 </div>
 <div class="row">
   <div class="col-xl-12">
@@ -153,7 +151,7 @@ header .calendar-current-date {
           </pre>
         </div>
         <table class="table">
-          <thead > 
+          <thead>
             <tr>
               <th style="color: #07698c;" scope="col">Hora Início</th>
               <th style="color: #07698c;" scope="col">Hora Fim</th>
@@ -161,23 +159,85 @@ header .calendar-current-date {
               <th style="color: #07698c;" scope="col">Descrição</th>
               <th style="color: #07698c;" scope="col">Total</th>
               <th style="width: 15%;"></th>
+              <th style="width: 15%;"></th>
             </tr>
           </thead>
           <tbody>
             {% for activity in activityList %}
-              <tr>
-                <td style="color: #07698c;">{{ activity.dateStart }}</td>
-                <td style="color: #07698c;">{{ activity.dateEnd }}</td>
-                <td style="color: #07698c;">{{ activity.activity }}</td>
-                <td style="color: #07698c;">{{ activity.description }}</td>
-                <td style="color: #07698c;">{{ activity.total }}</td>
-                <td style="width: 15%;"></td>
-              </tr>
+            <tr>
+              <td style="color: #07698c;">{{ activity.dateStart }}</td>
+              <td style="color: #07698c;">{{ activity.dateEnd }}</td>
+              <td style="color: #07698c;">{{ activity.activity }}</td>
+              <td style="color: #07698c;">{{ activity.description }}</td>
+              <td style="color: #07698c;">{{ activity.total }}</td>
+              <td style="width: 10%; min-width: 10%;"><a type="button" data-toggle="modal" data-target="#editModal"><span id="calendar-next" class="material-symbols-rounded">
+                  edit
+                </span></a></td>
+              <td style="width: 10%; min-width: 10%;"><a type="button" data-toggle="modal" data-target="#deleteModal"><span id="calendar-next" class="material-symbols-rounded">
+                delete
+              </span></a></td>
+            </tr>
             {% endfor %}
 
           </tbody>
         </table>
       </div>
     </div>
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteModalLabel">Confirmar Exclusão</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Tem certeza que deseja excluir essa atividade?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Excluir</button>
+            <button type="button" class="btn btn-primary">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editModalLabel">Confirmar Exclusão</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Horário Início</label>
+                <input type="time" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Horário Fim</label>
+                <input type="time" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Atividade</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Descritivo</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-primary">Salvar</button>
+            </div>
+          </form>
+          
+        </div>
+      </div>
+    </div>
 
-  {% endblock %}
+    {% endblock %}

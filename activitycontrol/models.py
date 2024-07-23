@@ -6,8 +6,8 @@ class ActivityControl(models.Model):
         default = uuid.uuid4,
         editable = False
     )
-    dateStart = models.FloatField()
-    dateEnd = models.FloatField()
+    dateStart = models.TimeField()
+    dateEnd = models.TimeField()
     activity = models.CharField(max_length=100)
     description = models.CharField(max_length=255)
     total = models.FloatField()
