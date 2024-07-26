@@ -5,5 +5,6 @@ from . import import_data
 app_name = 'activitycontrol'
 
 urlpatterns = [
-    path('get-activitycontrol/', views.get_activitycontrol, name='get_activitycontrol')
+    path('get-activitycontrol/', views.get_activitycontrol, name='get_activitycontrol'),
+    path('get-activitycontrol/post-crudActivity/', views.crudActivity, name='post_crudActivity')
 ]

@@ -164,79 +164,81 @@
           </thead>
           <tbody>
             {% for activity in activityList %}
-            <tr>
-              <td style="color: #07698c;">{{ activity.dateStart }}</td>
-              <td style="color: #07698c;">{{ activity.dateEnd }}</td>
+            <tr id="{{ activity.id }}"> 
+              <td style="color: #07698c;">{{ activity.dateStart|time:"H:i" }}</td>
+              <td style="color: #07698c;">{{ activity.dateEnd|time:"H:i" }}</td>
               <td style="color: #07698c;">{{ activity.activity }}</td>
               <td style="color: #07698c;">{{ activity.description }}</td>
               <td style="color: #07698c;">{{ activity.total }}</td>
-              <td style="width: 10%; min-width: 10%;"><a type="button" data-toggle="modal" data-target="#editModal"><span id="calendar-next" class="material-symbols-rounded">
+              <td style="width: 10%; min-width: 10%;"><a type="button" data-toggle="modal" data-target="#editModal{{activity.id}}"><span id="calendar-next" class="material-symbols-rounded">
                   edit
                 </span></a></td>
-              <td style="width: 10%; min-width: 10%;"><a type="button" data-toggle="modal" data-target="#deleteModal"><span id="calendar-next" class="material-symbols-rounded">
+              <td style="width: 10%; min-width: 10%;"><a type="button" data-toggle="modal" data-target="#deleteModal{{activity.id}}"><span id="calendar-next" class="material-symbols-rounded">
                 delete
               </span></a></td>
             </tr>
+            <div class="modal fade" id="deleteModal{{activity.id}}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirmar Exclusão</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    Tem certeza que deseja excluir essa atividade?
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Excluir</button>
+                    <button type="button" class="btn btn-primary">Cancelar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal fade" id="editModal{{activity.id}}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Confirmar Exclusão</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <form role="form" action="post-crudActivity/" method="post" novalidate>
+                    {% csrf_token %}
+                    <div class="modal-body">
+                      <input name="objectId" type="hidden" value="{{ activity.id }}" />
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Horário Início</label>
+                        <input type="time" name="dateStart" value="{{ activity.dateStart|time:"H:i" }}" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" >
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Horário Fim</label>
+                        <input type="time" name="dateEnd" value="{{ activity.dateEnd|time:"H:i" }}" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" >
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Atividade</label>
+                        <input type="text" name="activity" value="{{ activity.activity }}" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Atividade">
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Descritivo</label>
+                        <input type="email" name="description" value="{{ activity.description }}" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Descrição da atividade">
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                      <button type="submit" value="Submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                  </form>
+                  
+                </div>
+              </div>
+            </div>
             {% endfor %}
 
           </tbody>
         </table>
-      </div>
-    </div>
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="deleteModalLabel">Confirmar Exclusão</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            Tem certeza que deseja excluir essa atividade?
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Excluir</button>
-            <button type="button" class="btn btn-primary">Cancelar</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editModalLabel">Confirmar Exclusão</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <form>
-            <div class="modal-body">
-              <div class="form-group">
-                <label for="exampleInputEmail1">Horário Início</label>
-                <input type="time" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-              </div>
-              <div class="form-group">
-                <label for="exampleInputEmail1">Horário Fim</label>
-                <input type="time" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-              </div>
-              <div class="form-group">
-                <label for="exampleInputEmail1">Atividade</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-              </div>
-              <div class="form-group">
-                <label for="exampleInputEmail1">Descritivo</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-              <button type="button" class="btn btn-primary">Salvar</button>
-            </div>
-          </form>
-          
-        </div>
       </div>
     </div>
 
