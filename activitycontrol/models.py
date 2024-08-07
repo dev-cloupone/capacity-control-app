@@ -8,6 +8,10 @@ class ActivityControl(models.Model):
         default = uuid.uuid4,
         editable = False
     )
+    # userId = models.UUIDField(
+    #     primary_key = False,
+    #     editable = False
+    # )
     date = models.DateField(default=datetime.date.today)
     dateStart = models.TimeField()
     dateEnd = models.TimeField()

@@ -11,6 +11,7 @@
     width: 450px;
     border-radius: 10px;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    margin-bottom: 20px;
   }
 
   .calendar-container header {
@@ -111,34 +112,51 @@
     background: #e4e1e1;
   }
 </style>
-<div class="col-xl-12">
-  <div class="calendar-container">
-    <header class="calendar-header">
-      <p class="calendar-current-date"></p>
-      <div class="calendar-navigation">
-        <span id="calendar-prev" class="material-symbols-rounded">
-          chevron_left
-        </span>
-        <span id="calendar-next" class="material-symbols-rounded">
-          chevron_right
-        </span>
-      </div>
-    </header>
+<div class="row">
+  <div class="col-xl-6">
+    <div class="calendar-container">
+      <header class="calendar-header">
+        <p class="calendar-current-date"></p>
+        <div class="calendar-navigation">
+          <span id="calendar-prev" class="material-symbols-rounded">
+            chevron_left
+          </span>
+          <span id="calendar-next" class="material-symbols-rounded">
+            chevron_right
+          </span>
+        </div>
+      </header>
 
-    <div class="calendar-body">
-      <ul class="calendar-weekdays">
-        <li>Dom</li>
-        <li>Seg</li>
-        <li>Ter</li>
-        <li>Qua</li>
-        <li>Qui</li>
-        <li>Sex</li>
-        <li>Sab</li>
-      </ul>
-      <ul class="calendar-dates"></ul>
+      <div class="calendar-body">
+        <ul class="calendar-weekdays">
+          <li>Dom</li>
+          <li>Seg</li>
+          <li>Ter</li>
+          <li>Qua</li>
+          <li>Qui</li>
+          <li>Sex</li>
+          <li>Sab</li>
+        </ul>
+        <ul class="calendar-dates"></ul>
+      </div>
     </div>
   </div>
+  <div class="col-xl-6">
+
+  <button style="position: relative;height: 50px; top: 23px;" class="btn btn-outline-primary" data-toggle="modal"
+  data-target="#addModal">
+    <span style="bottom: 5px; position: relative;">
+      Novo
+    </span> 
+    <span class="material-symbols-outlined">
+      add
+    </span>
+  </button>
+  
+  </div>
 </div>
+
+
 <div class="row">
   <div class="col-xl-12">
     <div class="card card-default">
@@ -162,68 +180,84 @@
               <th style="width: 15%;"></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="activitiesBody">
             {% for activity in activityList %}
-            <tr id="{{ activity.id }}"> 
-              <td style="color: #07698c;">{{ activity.dateStart|time:"H:i" }}</td>
-              <td style="color: #07698c;">{{ activity.dateEnd|time:"H:i" }}</td>
-              <td style="color: #07698c;">{{ activity.activity }}</td>
-              <td style="color: #07698c;">{{ activity.description }}</td>
-              <td style="color: #07698c;">{{ activity.total }}</td>
-              <td style="width: 10%; min-width: 10%;"><a type="button" data-toggle="modal" data-target="#editModal{{activity.id}}"><span id="calendar-next" class="material-symbols-rounded">
-                  edit
-                </span></a></td>
-              <td style="width: 10%; min-width: 10%;"><a type="button" data-toggle="modal" data-target="#deleteModal{{activity.id}}"><span id="calendar-next" class="material-symbols-rounded">
-                delete
-              </span></a></td>
+            <tr id="{{ activity.id }}" class="todayList">
+              <td class="dateStartField" style="color: #07698c; width: 10%;">{{ activity.dateStart|time:"H:i" }}</td>
+              <td class="dateEndField" style="color: #07698c; width: 10%;">{{ activity.dateEnd|time:"H:i" }}</td>
+              <td class="activityField" style="color: #07698c; width: 28%;">{{ activity.activity }}</td>
+              <td class="descriptionField" style="color: #07698c; width: 28%;">{{ activity.description }}</td>
+              <td style="color: #07698c; width: 6%;">{{ activity.total }}</td>
+              <td style="width: 10%; min-width: 10%; text-align: right"><a type="button" data-toggle="modal" data-id="{{activity.id}}"
+                  data-target="#editModal"><span id="calendar-next" data-id="{{activity.id}}" class="material-symbols-rounded editModalButton">
+                    edit
+                  </span></a></td>
+              <td style="width: 10%; min-width: 10%; text-align: right"><a type="button" data-toggle="modal" data-id="{{activity.id}}"
+                  data-target="#deleteModal"><span id="calendar-next" data-id="{{activity.id}}" class="material-symbols-rounded deleteModalButton">
+                    delete
+                  </span></a></td>
             </tr>
-            <div class="modal fade" id="deleteModal{{activity.id}}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Confirmar Exclusão</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    Tem certeza que deseja excluir essa atividade?
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Excluir</button>
-                    <button type="button" class="btn btn-primary">Cancelar</button>
-                  </div>
+            
+            {% endfor %}
+            {% include "formactivity.html" %}
+            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="deleteModalLabel">Confirmar Exclusão</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  Tem certeza que deseja excluir essa atividade?
+                </div>
+                <div class="modal-footer">
+                  <form method="POST" action="post-crudActivity/">
+                    {% csrf_token %}
+                    <input id="objectIdDelete" type="hidden" name="objectId" />
+                    <input type="hidden" name="isDelete" value="1" />
+                  <button type="submit" value="Submit" class="btn btn-secondary" >Excluir</button>
+                  </form> 
+                  <button type="button" class="btn btn-primary">Cancelar</button>
                 </div>
               </div>
             </div>
-            <div class="modal fade" id="editModal{{activity.id}}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+          </div>
+            <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel"
+              aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Confirmar Exclusão</h5>
+                    <h5 class="modal-title" id="editModalLabel">Editar Atividade</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
-                  <form role="form" action="post-crudActivity/" method="post" novalidate>
+                  <form method="post" action="post-crudActivity/">
                     {% csrf_token %}
                     <div class="modal-body">
-                      <input name="objectId" type="hidden" value="{{ activity.id }}" />
+                      <input id="objectIdInput" name="objectId" type="hidden" />
                       <div class="form-group">
                         <label for="exampleInputEmail1">Horário Início</label>
-                        <input type="time" name="dateStart" value="{{ activity.dateStart|time:"H:i" }}" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" >
+                        <input type="time" name="dateStart" 
+                          class="form-control" id="dateStartInput" aria-describedby="emailHelp">
                       </div>
                       <div class="form-group">
                         <label for="exampleInputEmail1">Horário Fim</label>
-                        <input type="time" name="dateEnd" value="{{ activity.dateEnd|time:"H:i" }}" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" >
+                        <input type="time" name="dateEnd" 
+                          class="form-control" id="dateEndInput" aria-describedby="emailHelp">
                       </div>
                       <div class="form-group">
                         <label for="exampleInputEmail1">Atividade</label>
-                        <input type="text" name="activity" value="{{ activity.activity }}" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Atividade">
+                        <input type="text" name="activity"  class="form-control"
+                          id="activityInput" aria-describedby="emailHelp" placeholder="Atividade">
                       </div>
                       <div class="form-group">
                         <label for="exampleInputEmail1">Descritivo</label>
-                        <input type="email" name="description" value="{{ activity.description }}" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Descrição da atividade">
+                        <input type="text" name="description"  class="form-control"
+                          id="descriptionInput" aria-describedby="emailHelp" placeholder="Descrição da atividade">
                       </div>
                     </div>
                     <div class="modal-footer">
@@ -231,15 +265,12 @@
                       <button type="submit" value="Submit" class="btn btn-primary">Salvar</button>
                     </div>
                   </form>
-                  
+
                 </div>
               </div>
             </div>
-            {% endfor %}
-
           </tbody>
         </table>
       </div>
     </div>
-
     {% endblock %}

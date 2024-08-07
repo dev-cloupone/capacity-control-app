@@ -1,6 +1,11 @@
 let date = new Date();
 let year = date.getFullYear();
 let month = date.getMonth();
+let pageLoad = true;
+let selectedDay = 0;
+let selectedMonth = 0;
+let selectedYear = 0;
+
  
 const day = document.querySelector(".calendar-dates");
  
@@ -9,6 +14,7 @@ const currdate = document
  
 const prenexIcons = document
     .querySelectorAll(".calendar-navigation span");
+    
  
 // Array of month names
 const months = [
@@ -53,13 +59,25 @@ const manipulate = () => {
     // Loop to add the dates of the current month
     for (let i = 1; i <= lastdate; i++) {
  
+        let isToday = false;
         // Check if the current date is today
-        let isToday = i === date.getDate()
+        if(pageLoad) {
+            isToday = i === date.getDate()
             && month === new Date().getMonth()
             && year === new Date().getFullYear()
             ? "active"
             : "";
-        lit += `<li class="${isToday}">${i}</li>`;
+        } else {
+            isToday = i === selectedDay 
+            && month === selectedMonth
+            && year === selectedYear
+            ? "active" : "";
+        }
+        if(isToday !== "") {
+            const dateMonth = month + 1
+            $("#insertDateInput").val(year + "-" + dateMonth + "-" + i)
+        }
+        lit += `<li data-day="${i}" data-month="${month}" data-year="${year}" class="${isToday} monthDay">${i}</li>`;
     }
  
     // Loop to add the first dates of the next month
@@ -74,6 +92,7 @@ const manipulate = () => {
     // update the HTML of the dates element 
     // with the generated calendar
     day.innerHTML = lit;
+    pageLoad = false;
 }
  
 manipulate();
@@ -112,4 +131,52 @@ prenexIcons.forEach(icon => {
         // update the calendar display
         manipulate();
     });
+});
+
+$(document).ready(function () {
+    $("body").on("click", ".monthDay", function () {
+        selectedDay = $(this).data("day");
+        selectedMonth = parseInt($(this).data("month"));
+        selectedYear = $(this).data("year");
+        manipulate();
+        $.ajax({
+            url: "get-dayFilterData/",
+            type: "POST",
+            data: JSON.stringify({
+                day: selectedDay,
+                month:  selectedMonth + 1,
+                year: selectedYear
+            }),
+            dataType: "json",
+            success: function (res, status) {
+                $(".todayList").css("display","none");
+                $("#activitiesBody").empty();
+                $.each(res, function(index, item) {
+                    let newRow = $('<tr id="' + item.pk + '" class="todayList"></tr>');
+                    const delimiter = ":";
+                    newRow.append($('<td class="dateStartField" style="color: #07698c; width: 10%;"></td>').text(item.fields.dateStart.split(delimiter).slice(0, 2).join(delimiter))); 
+                    newRow.append($('<td class="dateEndField" style="color: #07698c; width: 10%;"></td>').text(item.fields.dateEnd.split(delimiter).slice(0, 2).join(delimiter))); 
+                    newRow.append($('<td class="activityField" style="color: #07698c; width: 28%;"></td>').text(item.fields.activity)); 
+                    newRow.append($('<td class="descriptionField" style="color: #07698c; width: 28%;"></td>').text(item.fields.description)); 
+                    newRow.append($('<td style="color: #07698c; width: 6%;"></td>').text(item.fields.total)); 
+                    newRow.append($('<td style="width: 10%; min-width: 10%; text-align: right"><a type="button" data-toggle="modal" data-id="' + item.pk + '"' +
+                  'data-target="#editModal"><span id="calendar-next" data-id="' + item.pk + '" class="material-symbols-rounded editModalButton">' +
+                    'edit' +
+                  '</span></a></td>'));
+                  newRow.append($('<td style="width: 10%; min-width: 10%; text-align: right"><a type="button" data-toggle="modal"' +
+                  'data-target="#deleteModal' + item.pk + '"><span id="calendar-next" class="material-symbols-rounded">' +
+                    'delete' +
+                  '</span></a></td>')); 
+                        
+                    $('#activitiesBody').append(newRow);
+                    $('.deleteModalButton').on("click", deleteModalAjax);
+                    $('.editModalButton').on("click", editModalAjax);
+                });
+
+            },
+            error: function (res) {
+                alert(res.status);
+            }
+        });
+    })
 });
