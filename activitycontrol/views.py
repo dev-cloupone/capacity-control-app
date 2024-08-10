@@ -8,7 +8,7 @@ import csv
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 
-# @login_required
+@login_required
 def get_activitycontrol(request):        
     activity_list = ActivityControl.objects.filter(date=datetime.date.today())
     print(activity_list)
@@ -38,12 +38,14 @@ def crudActivity(request):
             instance.save()
         else:
             print("new")
+            user = request.user
             date = request.POST['insertDate']
             dateStart = request.POST['dateStart']
             dateEnd = request.POST['dateEnd']
             activity = request.POST['activity']
             description = request.POST['description']
             activityModel = ActivityControl(
+                user = user,
                 date = date,
                 dateStart = dateStart, 
                 dateEnd = dateEnd,

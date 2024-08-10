@@ -171,13 +171,12 @@
         <table class="table">
           <thead>
             <tr>
-              <th style="color: #07698c;" scope="col">Hora Início</th>
-              <th style="color: #07698c;" scope="col">Hora Fim</th>
-              <th style="color: #07698c;" scope="col">Atividade</th>
-              <th style="color: #07698c;" scope="col">Descrição</th>
-              <th style="color: #07698c;" scope="col">Total</th>
-              <th style="width: 15%;"></th>
-              <th style="width: 15%;"></th>
+              <th style="color: #07698c; width: 10%;" scope="col">Hora Início</th>
+              <th style="color: #07698c; width: 10%;" scope="col">Hora Fim</th>
+              <th style="color: #07698c; width: 28%;" scope="col">Atividade</th>
+              <th style="color: #07698c; width: 28%;" scope="col">Descrição</th>
+              <th style="color: #07698c; width: 6%;" scope="col">Total</th>
+              <th style="width: 20%; color: #07698c; text-align: right">Ações</th>
             </tr>
           </thead>
           <tbody id="activitiesBody">
@@ -188,14 +187,14 @@
               <td class="activityField" style="color: #07698c; width: 28%;">{{ activity.activity }}</td>
               <td class="descriptionField" style="color: #07698c; width: 28%;">{{ activity.description }}</td>
               <td style="color: #07698c; width: 6%;">{{ activity.total }}</td>
-              <td style="width: 10%; min-width: 10%; text-align: right"><a type="button" data-toggle="modal" data-id="{{activity.id}}"
+              <td style="width: 10%; min-width: 10%; text-align: right"><a type="button" data-id="{{activity.id}}"  data-toggle="modal" 
                   data-target="#editModal"><span id="calendar-next" data-id="{{activity.id}}" class="material-symbols-rounded editModalButton">
                     edit
-                  </span></a></td>
-              <td style="width: 10%; min-width: 10%; text-align: right"><a type="button" data-toggle="modal" data-id="{{activity.id}}"
+                  </span></a> 
+                <a type="button" data-id="{{activity.id}}"  data-toggle="modal" 
                   data-target="#deleteModal"><span id="calendar-next" data-id="{{activity.id}}" class="material-symbols-rounded deleteModalButton">
                     delete
-                  </span></a></td>
+                  </span></a></td> 
             </tr>
             
             {% endfor %}
@@ -220,14 +219,14 @@
                     <input type="hidden" name="isDelete" value="1" />
                   <button type="submit" value="Submit" class="btn btn-secondary" >Excluir</button>
                   </form> 
-                  <button type="button" class="btn btn-primary">Cancelar</button>
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
                 </div>
               </div>
             </div>
           </div>
             <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel"
               aria-hidden="true">
-              <div class="modal-dialog">
+              <div class="modal-dialog"> 
                 <div class="modal-content">
                   <div class="modal-header">
                     <h5 class="modal-title" id="editModalLabel">Editar Atividade</h5>
