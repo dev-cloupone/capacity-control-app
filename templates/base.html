@@ -1,0 +1,201 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt" dir="ltr">
+  <head>
+      <meta charset="utf-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+      <link rel="icon" type="image/x-icon" href="projeto/logo.png">
+      <title>{% block 'title' %}{% endblock %}</title>
+
+  <!-- GOOGLE FONTS -->
+  <link href="https://fonts.googleapis.com/css?family=Karla:400,700|Roboto" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link href="{% static 'plugins/material/css/materialdesignicons.min.css' %}" rel="stylesheet" />
+  <link href="{% static 'plugins/simplebar/simplebar.css' %}" rel="stylesheet" />
+
+  <!-- PLUGINS CSS STYLE -->
+  <link href="{% static 'plugins/nprogress/nprogress.css' %}" rel="stylesheet" />
+
+  <link href="{% static 'plugins/prism/prism.css' %}" rel="stylesheet" />
+  
+  <!-- MONO CSS -->
+  <link id="main-css-href" rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+  <!-- FAVICON -->
+  <link href="{% static 'images/favicon.png' %}" rel="shortcut icon" />
+  <script src="{% static 'plugins/nprogress/nprogress.js' %}"></script>
+</head>
+
+
+  <body class="navbar-fixed sidebar-fixed" id="body">
+    <script>
+      NProgress.configure({ showSpinner: false });
+      NProgress.start();
+
+    </script>
+ 
+    <div class="wrapper">
+      
+      
+        <!-- ====================================
+          ——— LEFT SIDEBAR WITH OUT FOOTER
+        ===================================== -->
+        <aside class="left-sidebar sidebar-dark" id="left-sidebar">
+          <div id="sidebar" class="sidebar sidebar-with-footer">
+            <!-- Aplication Brand -->
+            <div class="app-brand">
+              <a href="{% url 'home' %}">
+                <span class="brand-name">CloupOne - Agro</span>
+
+              </a>
+            </div>
+            <!-- begin sidebar scrollbar -->
+            <div class="sidebar-left" data-simplebar style="height: 100%;">
+              <!-- sidebar menu -->
+              <ul class="nav sidebar-inner" id="sidebar-menu">
+                  <li>
+                    <a class="sidenav-item-link" href="{% url 'home' %}">
+                      <i class="mdi mdi-briefcase-account-outline"></i>
+                      <span class="nav-text">Dashboard</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="sidenav-item-link" href="{% url 'home:import-geral' %}">
+                      <i class="bi bi-cloud-upload"></i>
+                      <span class="nav-text">Importar dados</span>
+                    </a>
+                  </li>
+                  <li class="section-title">
+                    Talhão
+                  </li>
+                  <li>
+                    <a class="sidenav-item-link" href="{% url 'fields:get_fields' %}">
+                      <i class="bi bi-search"></i>
+                      <span class="nav-text">Consulta de talhões</span>
+                    </a>
+                  </li>
+                    <li class="section-title">
+                    Atividades
+                    </li>
+                  <li>
+                    <a class="sidenav-item-link" href="{% url 'activities:get_activities' %}">
+                      <i class="bi bi-search"></i>
+                      <span class="nav-text">Consultar atividades</span>
+                    </a>
+                  </li>
+                  <li class="section-title">
+                    Insumos
+                    </li>
+                  <li>
+                    <a class="sidenav-item-link" href="{% url 'supplies:get_supplies' %}">
+                      <i class="bi bi-search"></i>
+                      <span class="nav-text">Consulta de insumos</span>
+                    </a>
+                  </li>
+              </ul>
+            </div>
+
+            <div class="sidebar-footer">
+              <div class="sidebar-footer-content">
+                <ul class="d-flex">
+                 <!-- <li>
+                    <a href="user-account-settings.html" data-toggle="tooltip" title="Profile settings"><i class="mdi mdi-settings"></i></a></li>
+                  <li>
+                    <a href="#" data-toggle="tooltip" title="No chat messages"><i class="mdi mdi-chat-processing"></i></a>
+                  </li>-->
+                </ul>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+      
+
+      <!-- ====================================
+      ——— PAGE WRAPPER
+      ===================================== -->
+      <div class="page-wrapper">
+        
+          <!-- Header -->
+          <header class="main-header" id="header">
+            <nav class="navbar navbar-expand-lg navbar-light" id="navbar">
+              <!-- Sidebar toggle button -->
+              <button id="sidebar-toggler" class="sidebar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+              </button>
+
+              <span class="page-title">{% block 'page_title' %}{% endblock %}</span>
+
+              <div class="navbar-right ">
+                <ul class="nav navbar-nav">
+                  <!-- User Account -->
+                  <li class="dropdown user-menu">
+                    <button class="dropdown-toggle nav-link" data-toggle="dropdown">
+                         <i class="bi bi-person"></i>
+                        <span> <class="d-none d-lg-inline-block">{{ user.first_name }} {{ user.last_name }}</class> </span>
+
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                      <li>
+                        <a class="dropdown-link-item" href="{% url 'users:user_settings' %}">
+                          <i class="mdi mdi-account-outline"></i>
+                          <span class="nav-text">Meu perfil</span>
+                        </a>
+                      </li>
+                      <li class="dropdown-footer">
+                        <a class="dropdown-link-item" href="{% url 'users:logout' %}"> <i class="mdi mdi-logout"></i> Sair </a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </nav>
+
+
+          </header>
+
+        <!-- ====================================
+        ——— CONTENT WRAPPER
+        ===================================== -->
+        <div class="content-wrapper">
+          <div class="content"><!-- For Components documentaion -->
+
+      {% block 'body' %}{% endblock %}
+      <!--  </div>
+          <footer class="footer mt-auto">
+            <div class="copyright bg-white">
+              <p>
+                &copy; <span id="copy-year"></span> Copyright <a class="text-primary" href="" target="_blank" >Giovani</a>.
+              </p>
+            </div>
+            <script>
+                var d = new Date();
+                var year = d.getFullYear();
+                document.getElementById("copy-year").innerHTML = year;
+            </script>
+          </footer>
+
+      </div>-->
+
+
+                    <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+                    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+                    <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+                    <script src="{% static 'plugins/simplebar/simplebar.min.js' %}"></script>
+                    <script src="https://unpkg.com/hotkeys-js/dist/hotkeys.min.js"></script>
+
+                    <script src="{% static 'plugins/prism/prism.js' %}"></script>
+                    <script src="{% static 'plugins/apexcharts/apexcharts.js' %}"></script>
+                    
+                    <script src="{% static 'js/mono.js' %}"></script>
+                    <script src="{% static 'js/calendar.js' %}"></script>
+                    <script src="{% static 'js/modalactivities.js' %}"></script>
+                    <script src="{% static 'js/chart.js' %}"></script>
+                    <script src="{% static 'js/map.js' %}"></script>
+                    <script src="{% static 'js/custom.js' %}"></script>
+
+  </body>
+</html>

@@ -1,0 +1,375 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'title' %}Saldo de banco de horas{% endblock %}
+{% block 'page_title' %}Saldo de banco de horas{% endblock %}
+
+{% block 'body' %}
+<style>
+  .dayViewer-container {
+    padding: 10%;
+    background: #fff;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    border-radius: 10px;
+    width: 450px;
+    margin-bottom: 10px;
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    height: 350px;
+  }
+
+  .dayViewer-day-row {
+    height: 200px;
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    align-items: center;
+  }
+
+  .dayViewer-day-bubble {
+    background: #808080;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    text-align: center;
+    height: 100px;
+    width: 100px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    border-radius: 1000px;
+  }
+
+  .dayViewer-activity-list {
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    bottom: 0%;
+  }
+
+  .dayViewer-month-title {
+    font-weight: 500;
+    font-size: 1.45rem;
+  }
+
+  .calendar-container {
+    background: #fff;
+    width: 450px;
+    border-radius: 10px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    margin-bottom: 20px;
+  }
+
+
+
+  .calendar-container header {
+    display: flex;
+    align-items: center;
+    padding: 25px 30px 10px;
+    justify-content: space-between;
+  }
+
+  .dayViewer-activity-item {
+    height: 60px;
+    width: 60px;
+    border: 1px solid gray;
+    border-radius: 9999px;
+    text-align: center;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  header .calendar-navigation {
+    display: flex;
+  }
+
+  header .calendar-navigation span {
+    height: 38px;
+    width: 38px;
+    margin: 0 1px;
+    cursor: pointer;
+    text-align: center;
+    line-height: 38px;
+    border-radius: 50%;
+    user-select: none;
+    color: #aeabab;
+    font-size: 1.9rem;
+  }
+
+  .calendar-navigation span:last-child {
+    margin-right: -10px;
+  }
+
+  header .calendar-navigation span:hover {
+    background: #f2f2f2;
+  }
+
+  header .calendar-current-date {
+    font-weight: 500;
+    font-size: 1.45rem;
+  }
+
+  .calendar-body {
+    padding: 20px;
+  }
+
+  .calendar-body ul {
+    list-style: none;
+    flex-wrap: wrap;
+    display: flex;
+    text-align: center;
+  }
+
+  .calendar-body .calendar-dates {
+    margin-bottom: 20px;
+  }
+
+  .calendar-body li {
+    width: calc(100% / 7);
+    font-size: 1.07rem;
+    color: #414141;
+  }
+
+  .calendar-body .calendar-weekdays li {
+    cursor: default;
+    font-weight: 500;
+  }
+
+  .calendar-body .calendar-dates li {
+    margin-top: 30px;
+    position: relative;
+    z-index: 1;
+    cursor: pointer;
+  }
+
+  .calendar-dates li.inactive {
+    color: #aaa;
+  }
+
+  .calendar-dates li.active {
+    color: #fff;
+  }
+
+  .calendar-dates li::before {
+    position: absolute;
+    content: "";
+    z-index: -1;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .calendar-dates li.active::before {
+    background: #6332c5;
+  }
+
+  .calendar-dates li:not(.active):hover::before {
+    background: #e4e1e1;
+  }
+
+  .material-symbols-outlined {
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24
+  }
+</style>
+<div class="row">
+  <div class="col-xl-6">
+    <div class="calendar-container">
+      <header class="calendar-header">
+        <p class="calendar-current-date"></p>
+        <div class="calendar-navigation">
+          <span id="calendar-prev" class="material-symbols-rounded">
+            chevron_left
+          </span>
+          <span id="calendar-next" class="material-symbols-rounded">
+            chevron_right
+          </span>
+        </div>
+      </header>
+
+      <div class="calendar-body">
+        <ul class="calendar-weekdays">
+          <li>Dom</li>
+          <li>Seg</li>
+          <li>Ter</li>
+          <li>Qua</li>
+          <li>Qui</li>
+          <li>Sex</li>
+          <li>Sab</li>
+        </ul>
+        <ul class="calendar-dates"></ul>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-6">
+    <div style="display: flex; flex-direction: column;">
+      <div style="display: flex; flex-direction: row;">
+      <button style="width: 130px;position: relative;height: 50px; top: 23px; padding-right: 20px;" class="btn btn-outline-primary" data-toggle="modal"
+        data-target="#addModal">
+        <span style="bottom: 5px; position: relative;">
+          Novo
+        </span>
+        <span class="material-symbols-outlined">
+          add
+        </span>
+      </button>
+      <button style="width: 130px;position: relative;height: 50px; top: 23px;margin-left: 20px;" class="btn btn-outline-primary" onclick="todayButton()"
+        >
+        <span style="bottom: 5px; position: relative;">
+          Hoje
+        </span>
+        <span class="material-symbols-outlined">
+          calendar_month
+        </span>
+      </button>
+    </div>
+      <div class="dayViewer-container">
+        <div class="dayViewer-month-title"><span id="dayViewer-month-title-label"></span></div>
+        <div class="dayViewer-day-row">
+          <span id="dayViewer-prev" onclick="removeDay()" class="material-symbols-rounded">
+            chevron_left
+          </span>
+          <div class="dayViewer-day-bubble">
+            <span id="dayViewer-selected-weekDay" style="vertical-align: text-top; position: relative; top: 10px;"></span>
+            <span id="dayViewer-selected-day" style="vertical-align: middle; position: relative; top: 15px;">15</span>
+          </div>
+          <span id="dayViewer-next" onclick="advanceDay()" class="material-symbols-rounded">
+            chevron_right
+          </span>
+        </div>
+        <div class="dayViewer-activity-list">
+          <div class="dayViewer-activity-item" ><span id="dayViewer-item-1" style="position: relative; top: 25%;">{{activityList.0.dateStart|time:"H:i"}}</span></div>
+          <div class="dayViewer-activity-item" ><span id="dayViewer-item-2" style="position: relative; top: 25%;">{{activityList.1.dateStart|time:"H:i"}}</span></div>
+          <div class="dayViewer-activity-item" ><span id="dayViewer-item-3" style="position: relative; top: 25%;">{{activityList.2.dateStart|time:"H:i"}}</span></div>
+          <div class="dayViewer-activity-item" ><span id="dayViewer-item-4" style="position: relative; top: 25%;">{{activityList.3.dateStart|time:"H:i"}}</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-xl-12">
+    <div class="card card-default">
+      <div class="card-header">
+        <h2>Saldo de banco de horas</h2>
+      </div>
+      <div class="card-body">
+        <div class="collapse" id="collapse-table-1">
+          <pre class="language-html mb-4">
+          </pre>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th style="color: #07698c; width: 10%;" scope="col">Hora Início</th>
+              <th style="color: #07698c; width: 10%;" scope="col">Hora Fim</th>
+              <th style="color: #07698c; width: 28%;" scope="col">Atividade</th>
+              <th style="color: #07698c; width: 28%;" scope="col">Descrição</th>
+              <th style="color: #07698c; width: 6%;" scope="col">Total</th>
+              <th style="width: 20%; color: #07698c; text-align: right">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="activitiesBody">
+            {% for activity in activityList %}
+            <tr id="{{ activity.id }}" class="todayList">
+              <td class="dateStartField" style="color: #07698c; width: 10%;">{{ activity.dateStart|time:"H:i" }}</td>
+              <td class="dateEndField" style="color: #07698c; width: 10%;">{{ activity.dateEnd|time:"H:i" }}</td>
+              <td class="activityField" style="color: #07698c; width: 28%;">{{ activity.activity }}</td>
+              <td class="descriptionField" style="color: #07698c; width: 28%;">{{ activity.description }}</td>
+              <td style="color: #07698c; width: 6%;">{{ activity.total }}</td>
+              <td style="width: 10%; min-width: 10%; text-align: right"><a type="button" data-id="{{activity.id}}"
+                  data-toggle="modal" data-target="#editModal"><span id="calendar-next" data-id="{{activity.id}}"
+                    class="material-symbols-rounded editModalButton">
+                    edit
+                  </span></a>
+                <a type="button" data-id="{{activity.id}}" data-toggle="modal" data-target="#deleteModal"><span
+                    id="calendar-next" data-id="{{activity.id}}" class="material-symbols-rounded deleteModalButton">
+                    delete
+                  </span></a>
+              </td>
+            </tr>
+
+            {% endfor %}
+            {% include "formactivity.html" %}
+            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirmar Exclusão</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    Tem certeza que deseja excluir essa atividade?
+                  </div>
+                  <div class="modal-footer">
+                    <form method="POST" action="post-crudActivity/">
+                      {% csrf_token %}
+                      <input id="objectIdDelete" type="hidden" name="objectId" />
+                      <input type="hidden" name="isDelete" value="1" />
+                      <button type="submit" value="Submit" class="btn btn-secondary">Excluir</button>
+                    </form>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Editar Atividade</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <form method="post" action="post-crudActivity/">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                      <input id="objectIdInput" name="objectId" type="hidden" />
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Horário Início</label>
+                        <input type="time" name="dateStart" class="form-control" id="dateStartInput"
+                          aria-describedby="emailHelp">
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Horário Fim</label>
+                        <input type="time" name="dateEnd" class="form-control" id="dateEndInput"
+                          aria-describedby="emailHelp">
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Atividade</label>
+                        <input type="text" name="activity" class="form-control" id="activityInput"
+                          aria-describedby="emailHelp" placeholder="Atividade">
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Descritivo</label>
+                        <input type="text" name="description" class="form-control" id="descriptionInput"
+                          aria-describedby="emailHelp" placeholder="Descrição da atividade">
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                      <button type="submit" value="Submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                  </form>
+
+                </div>
+              </div>
+            </div>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% endblock %}

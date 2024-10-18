@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'title' %}Agro Business{% endblock %}
+{% block 'page_title' %}Visão Geral{% endblock %}
+
+{% block 'body' %}
+
+
+{% if chart_data.fields.categories %}
+<div class="col-xl-6">
+    <div class="card card-default" id="user-acquisition">
+      <div class="card-header border-bottom pb-0">
+        <h2>Talhões</h2>
+      </div>
+
+      <div class="tab-content" id="myTabContent">
+        <div id="barchartlgFie"></div>
+      </div>
+    </div>
+</div>
+
+<script>
+    var fieldsChart = {{ chart_data.fields|safe }};
+</script>
+
+{% endif %}
+
+
+{% if chart_data.activities.categories %}
+<div class="col-xl-6">
+    <div class="card card-default" id="user-acquisition">
+      <div class="card-header border-bottom pb-0">
+        <h2>Atividades</h2>
+      </div>
+
+      <div class="tab-content" id="myTabContent">
+        <div id="barchartlgAct"></div>
+      </div>
+    </div>
+</div>
+
+<script>
+    var activitiesChart = {{ chart_data.activities|safe }};
+</script>
+{% endif %}
+
+
+{% if chart_data.supplies.categories %}
+<div class="col-xl-6">
+    <div class="card card-default" id="user-acquisition">
+      <div class="card-header border-bottom pb-0">
+        <h2>Insumos</h2>
+      </div>
+
+      <div class="tab-content" id="myTabContent">
+        <div id="barchartlgSup"></div>
+      </div>
+    </div>
+</div>
+
+<script>
+    var suppliesChart = {{ chart_data.supplies|safe }};
+</script>
+{% endif %}
+
+{% endblock %}

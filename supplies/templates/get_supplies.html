@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'title' %}Consulta de fornecimentos{% endblock %}
+{% block 'page_title' %}Consulta de fornecimentos{% endblock %}
+
+{% block 'body' %}
+
+<div class="row">
+  <div class="col-xl-6">
+    <div class="card card-default">
+      <div class="card-header">
+        <h2>Insumos</h2>
+      </div>
+      <div class="card-body">
+        <div class="collapse" id="collapse-table-1">
+          <pre class="language-html mb-4">
+          </pre>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Talhão</th>
+              <th scope="col">Tamanho</th>
+              <th scope="col">Insumo por hectare</th>
+              <th scope="col">Valor insumo</th>
+              <th scope="col">Total insumo</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            {% for supplie in supplieList %}
+              <tr>
+                <td>{{ supplie.name }}</td>
+                <td>{{ supplie.field_size}}</td>
+                <td>{{ supplie.quantity_per_hectare }}</td>
+                <td>{{ supplie.value }}</td>
+                <td>{{ supplie.total }}</td>
+
+              </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  {% endblock %}
