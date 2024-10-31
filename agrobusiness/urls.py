@@ -11,6 +11,7 @@ urlpatterns = [
     path('users/', include(('users.urls', 'users'), namespace='users')),
     path('fields/', include(('fields.urls', 'fields'), namespace='fields')),
     path('activities/', include(('activities.urls', 'activities'), namespace='activities')),
+    path('partner/', include(('partner.urls', 'partner'), namespace='partner')),
     path('activitycontrol/', include(('activitycontrol.urls', 'activitycontrol'), namespace='activitycontrol')),
     path('supplies/', include(('supplies.urls', 'supplies'), namespace='supplies')),
     path('home/', include(('home.urls', 'home'), namespace='home')),

@@ -10,6 +10,7 @@ from supplies.import_data import import_supplies
 from fields.views import  get_fields
 from activities.views import  get_activities
 from activitycontrol.views import  get_activitycontrol
+from partner.views import  get_partner
 from supplies.views import  get_supplies
 from django.views.decorators.csrf import csrf_exempt
 
@@ -34,6 +35,9 @@ def import_geral(request):
                 elif campo == 'activitycontrol':
                     import_activitycontrol(csv_file)
                     return redirect('/activitycontrol/get-activitycontrol/')
+                elif campo == 'partner':
+                    import_partner(csv_file)
+                    return redirect('/partner/get-partner/')
                 elif campo == 'supplies':
                     import_supplies(csv_file)
                     return redirect('/supplies/get-supplies/')

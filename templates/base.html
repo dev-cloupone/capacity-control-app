@@ -24,6 +24,8 @@
   <!-- MONO CSS -->
   <link id="main-css-href" rel="stylesheet" href="{% static 'css/style.css' %}" />
 
+  
+
   <!-- FAVICON -->
   <link href="{% static 'images/favicon.png' %}" rel="shortcut icon" />
   <script src="{% static 'plugins/nprogress/nprogress.js' %}"></script>
@@ -56,43 +58,23 @@
             <div class="sidebar-left" data-simplebar style="height: 100%;">
               <!-- sidebar menu -->
               <ul class="nav sidebar-inner" id="sidebar-menu">
-                  <li>
-                    <a class="sidenav-item-link" href="{% url 'home' %}">
-                      <i class="mdi mdi-briefcase-account-outline"></i>
-                      <span class="nav-text">Dashboard</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="sidenav-item-link" href="{% url 'home:import-geral' %}">
-                      <i class="bi bi-cloud-upload"></i>
-                      <span class="nav-text">Importar dados</span>
-                    </a>
-                  </li>
-                  <li class="section-title">
-                    Talhão
-                  </li>
-                  <li>
-                    <a class="sidenav-item-link" href="{% url 'fields:get_fields' %}">
-                      <i class="bi bi-search"></i>
-                      <span class="nav-text">Consulta de talhões</span>
-                    </a>
                   </li>
                     <li class="section-title">
                     Atividades
                     </li>
                   <li>
-                    <a class="sidenav-item-link" href="{% url 'activities:get_activities' %}">
+                    <a class="sidenav-item-link" href="http://127.0.0.1:8000/activitycontrol/get-activitycontrol/">
                       <i class="bi bi-search"></i>
                       <span class="nav-text">Consultar atividades</span>
                     </a>
                   </li>
                   <li class="section-title">
-                    Insumos
+                    Parceiros
                     </li>
                   <li>
-                    <a class="sidenav-item-link" href="{% url 'supplies:get_supplies' %}">
+                    <a class="sidenav-item-link" href="http://127.0.0.1:8000/partner/get-partner/">
                       <i class="bi bi-search"></i>
-                      <span class="nav-text">Consulta de insumos</span>
+                      <span class="nav-text">Consulta de parceiros</span>
                     </a>
                   </li>
               </ul>
@@ -183,6 +165,7 @@
 
                     <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
                     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
                     <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
                     <script src="{% static 'plugins/simplebar/simplebar.min.js' %}"></script>
                     <script src="https://unpkg.com/hotkeys-js/dist/hotkeys.min.js"></script>
@@ -193,6 +176,7 @@
                     <script src="{% static 'js/mono.js' %}"></script>
                     <script src="{% static 'js/calendar.js' %}"></script>
                     <script src="{% static 'js/modalactivities.js' %}"></script>
+                    <script src="{% static 'js/modalpartner.js' %}"></script>
                     <script src="{% static 'js/chart.js' %}"></script>
                     <script src="{% static 'js/map.js' %}"></script>
                     <script src="{% static 'js/custom.js' %}"></script>

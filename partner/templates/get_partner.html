@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'title' %}Parceiros de negócio{% endblock %}
+{% block 'page_title' %}Parceiros de negócio{% endblock %}
+
+{% block 'body' %}
+<style>
+  .material-symbols-outlined {
+    font-variation-settings:
+      'FILL' 0,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 24
+  }
+</style>
+<div class="row">
+  <div class="col-xl-12">
+    <div class="card card-default">
+      <div style="display: flex; flex-direction: row;" class="card-header">
+        <div class="col-xl-6">
+          <h2>Parceiros de negócio</h2>
+        </div>
+        <div>
+          <button style="width: 130px;position: relative;height: 50px; top: 23px; padding-right: 20px;"
+            class="btn btn-outline-primary" data-toggle="modal" data-target="#addModalPartner">
+            <span style="bottom: 5px; position: relative;">
+              Novo
+            </span>
+            <span class="material-symbols-outlined">
+              add
+            </span>
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="collapse" id="collapse-table-1">
+          <pre class="language-html mb-4">
+          </pre>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th style="color: #07698c; width: 20%;" scope="col">Código</th>
+              <th style="color: #07698c; width: 20%;" scope="col">Descrição</th>
+              <th style="color: #07698c; width: 10%;" scope="col">Tipo</th>
+              <th style="color: #07698c; width: 20%;" scope="col">CPF/CNPJ</th>
+              <th style="color: #07698c; width: 20%;" scope="col">Endereço</th>
+              <th style="width: 10%; color: #07698c; text-align: right">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="activitiesBody">
+            {% for partner in partnerList %}
+            <tr id="{{ partner.id }}" class="todayList">
+              <td class="descriptionField" style="color: #07698c; width: 20%;">{{ partner.partnerCode }}</td>
+              <td class="descriptionField" style="color: #07698c; width: 20%;">{{ partner.description }}</td>
+              <td class="descriptionField" style="color: #07698c; width: 10%;">{{ partner.partnerType }}</td>
+              <td class="descriptionField" style="color: #07698c; width: 20%;">{{ partner.nationalId }}</td>
+              <td style="color: #07698c; width: 20%;">{{ partner.address }}</td>
+              <td style="width: 10%; min-width: 10%; text-align: right"><a type="button" data-id="{{partner.id}}"
+                  data-toggle="modal" data-target="#editModal"><span id="calendar-next" data-id="{{partner.id}}"
+                    class="material-symbols-rounded editModalButton">
+                    edit
+                  </span></a>
+                <a type="button" data-id="{{partner.id}}" data-toggle="modal" data-target="#deleteModal"><span
+                    id="calendar-next" data-id="{{partner.id}}" class="material-symbols-rounded deleteModalButton">
+                    delete
+                  </span></a>
+              </td>
+            </tr>
+
+            {% endfor %}
+            {% include "formpartner.html" %}
+            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirmar Exclusão</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    Tem certeza que deseja excluir esse parceiro?
+                  </div>
+                  <div class="modal-footer">
+                    <form method="POST" action="post-crudPartner/">
+                      {% csrf_token %}
+                      <input id="objectIdDelete" type="hidden" name="objectId" />
+                      <input type="hidden" name="isDelete" value="1" />
+                      <button type="submit" value="Submit" class="btn btn-secondary">Excluir</button>
+                    </form>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Editar Parceiro</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <form method="post" action="post-crudPartner/">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                      <input id="objectIdInput" name="objectId" type="hidden" />
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Código</label>
+                        <input type="text" name="partnerCode" class="form-control" id="partnerCodeInput"
+                          aria-describedby="emailHelp" placeholder="Código">
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Descrição</label>
+                        <input type="text" name="description" class="form-control" id="descriptionInput"
+                          aria-describedby="emailHelp" placeholder="Descrição">
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Tipo de Parceiro</label>
+                        <select name="partnerType" class="form-control" id="partnerTypeInput" onchange="changePartnerType()"
+                          aria-describedby="emailHelp" placeholder="Tipo">
+                          <option value="PF">Pessoa física</option>
+                          <option value="PJ">Pessoa jurídica</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">CPF/CNPJ</label>
+                        <input type="text" name="nationalId" class="form-control cpfcnpj" id="nationalIdInput"
+                          aria-describedby="emailHelp" placeholder="CPF/CNPJ">
+                      </div>
+                      <div class="form-group"></div>
+                      <label for="exampleInputEmail1">Endereço</label>
+                      <input type="text" name="address" class="form-control" id="addressInput"
+                        aria-describedby="emailHelp" placeholder="Endereço">
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                      <button type="submit" value="Submit" class="btn btn-primary">Salvar</button>
+                    </div>                
+                </form>
+              </div>
+            </div>
+      </div>
+      </tbody>
+      </table>
+    </div>
+  </div>
+  {% endblock %}

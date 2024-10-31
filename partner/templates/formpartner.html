@@ -1,0 +1,53 @@
+
+
+{% block 'body' %}
+<div class="modal fade" id="addModalPartner" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel">Novo Parceiro</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form method="POST" action="post-crudPartner/">
+          {% csrf_token %}
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Código</label>
+              <input type="text" name="partnerCode" 
+                class="form-control" aria-describedby="emailHelp" placeholder="Código">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Descritivo</label>
+              <input type="text" name="description" 
+                class="form-control" aria-describedby="emailHelp" placeholder="Descritivo">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Tipo de Parceiro</label>
+              <select name="partnerType" class="form-control" onchange="changePartnerType()"
+                aria-describedby="emailHelp" placeholder="Tipo">
+                <option selected value="PF">Pessoa física</option>
+                <option value="PJ">Pessoa jurídica</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">CPF/CNPJ</label>
+              <input type="text" name="nationalId" class="form-control cpfcnpj"
+                aria-describedby="emailHelp" placeholder="CPF/CNPJ">
+            </div>
+            <div class="form-group"></div>
+            <label for="exampleInputEmail1">Endereço</label>
+            <input type="text" name="address" class="form-control"
+              aria-describedby="emailHelp" placeholder="Endereço">
+          </div>
+          <div class="modal-footer" >
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary" value="Submit">Salvar</button>
+          </div>
+        </form>
+        
+      </div>
+    </div>
+  </div>
+{% endblock %}

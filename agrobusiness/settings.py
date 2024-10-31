@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'fields',
     'activities',
     'activitycontrol',
+    'partner',
     'supplies'
 ]
 
